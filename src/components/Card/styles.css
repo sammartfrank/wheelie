@@ -1,0 +1,40 @@
+.card-wrapper {
+  display: flex;
+  width: 350px;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #e8e8e8;
+  padding: 1rem 0.5rem;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  position: relative;
+}
+
+.card-wrapper:hover {
+  cursor: pointer;
+  transform: scale(1.01);
+  transition: 300ms;
+}
+
+.item-title {
+  text-transform: capitalize;
+}
+
+.star-item {
+  height: 30px;
+  width: 30px;
+  background-image: url('../../assets/svg/YellowStar.svg');
+  background-size: cover;
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  display: none;
+  border: 1px solid blue;
+}
+
+.start-item-show {
+  display: block;
+  height: 30px;
+  border: 1px solid red;
+  width: 30px;
+}

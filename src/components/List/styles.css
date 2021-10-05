@@ -1,0 +1,32 @@
+.list-wrapper {
+  width: 60%;
+  margin: 0 auto;
+}
+
+.list-title {
+  text-transform: capitalize;
+}
+
+.list-title:hover {
+  cursor: pointer;
+}
+.list-detail {
+  color: #cdcdcd;
+}
+
+.item-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 10px;
+}
+
+.collapse {
+  display: none;
+  transition: 300ms;
+}
+
+.collapse.in {
+  display: block;
+  transition: 300ms;
+}

@@ -1,0 +1,50 @@
+ul.options-box {
+  display: block;
+  list-style: none;
+  width: 400px;
+  transition: width 0.3s;
+  position: absolute;
+  background: white;
+  left: 36%;
+  top: 40px;
+  border-bottom: 1px solid #e8e8e8;
+  border-left: 1px solid #e8e8e8;
+  border-right: 1px solid #e8e8e8;
+  padding: 0;
+  margin: 0;
+  z-index: 999;
+}
+
+ul.options-box li {
+  display: block;
+  background: white;
+  font-size: 1.2rem;
+  width: 100%;
+  border-radius: 2px;
+  border-bottom: 1px solid #cdcdcd;
+  padding: 0.5rem 0;
+}
+
+ul.options-box li:hover {
+  cursor: pointer;
+  font-weight: bold;
+  background: #cdcd;
+}
+
+.option-content {
+  position: relative;
+}
+
+.star {
+  background-image: url('../../../assets/svg/YellowStar.svg');
+  height: 40px;
+  width: 40px;
+  color: black;
+  position: absolute;
+  right: 10px;
+  top: 5px;
+}
+
+.results-summary {
+  color: #cdcdcd;
+}
