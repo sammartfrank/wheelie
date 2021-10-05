@@ -1,20 +1,28 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { reduceData } from '../utils';
-import { getData, editData } from '../utils/service';
+import { editData, getData } from '../utils/service';
 
 const useHomepage = () => {
   const [data, setData] = useState({
-    companies: [],
     animals: [],
+    companies: [],
     products: [],
   });
+
+  // collapse logic
   const [show, setShow] = useState({
-    companies: true,
-    animals: false,
+    animals: true,
+    companies: false,
     products: false,
   });
-  const [starredCount, setStarredCount] = useState(0);
-  const [starredItems, setStarredItems] = useState([]);
+  // faved logic
+  // Check localStorage
+  const [starredItems, setStarredItems] = useState(() => {
+    const starred = localStorage.getItem('faved');
+    const data = JSON.parse(starred);
+    return data || [];
+  });
+
   const [isLoading, setIsLoading] = useState(true);
 
   const toggleShow = (val) => () => {
@@ -24,42 +32,80 @@ const useHomepage = () => {
     });
   };
 
-  useMemo(() => {
-    getData()
-      .then((response) => {
-        setData(reduceData(response));
-        const starred = response.filter((itm) => Boolean(itm.starred));
-        setStarredItems(starred);
-        setStarredCount(starred.length);
+  useEffect(() => {
+    getData(1, 25)
+      .then((res) => {
+        let data;
+        res.forEach((element) => {
+          switch (element[0].type) {
+            case 'animal':
+              data = {
+                ...data,
+                animals: element,
+              };
+              break;
+            case 'product':
+              data = {
+                ...data,
+                products: element,
+              };
+              break;
+            case 'company':
+              data = {
+                ...data,
+                companies: element,
+              };
+              break;
+            default:
+              data = {};
+              break;
+          }
+        });
+        setData(data);
+        localStorage.setItem('data', JSON.stringify(data));
         setIsLoading(false);
       })
-      .catch((err) => {
-        console.error(err);
-        setIsLoading(false);
+      .catch((error) => {
+        console.error('Error: ', error);
       });
   }, []);
+
+  useEffect(() => {
+    if (starredItems.length) {
+      localStorage.setItem('faved', JSON.stringify(starredItems));
+    }
+  }, [starredItems]);
 
   const handleFaved = (id, opts) => () => {
     let favedItem = opts.filter((opt) => opt.id === id).shift();
     favedItem.starred = !favedItem.starred;
-    editData(id, favedItem).finally(() => {
-      setIsLoading(true);
-      getData()
-        .then((response) => {
-          setData(reduceData(response));
-          const starred = response.filter((itm) => Boolean(itm.starred));
-          setStarredItems(starred);
-          setStarredCount(starred.length);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+    editData(id, favedItem).then((updatedItem) => {
+      // Update upper most data;
+      // setData((prev) => {
+      //   let newState = {
+      //     ...prev,
+      //   };
+      //   switch (updatedItem.type) {
+      //     case 'animal':
+      //       const oldIndex = data.animals
+      //         .map((animal) => animal.id)
+      //         .indexOf(updatedItem.id);
+      //       newState.animals[oldIndex] = updatedItem;
+      //       break;
+      //     case 'company':
+      //       break;
+      //     case 'product':
+      //       break;
+      //     default:
+      //       break;
+      //   }
+      //   console.log('newState', newState);
+      // });
     });
   };
 
   return {
     data,
-    starredCount,
     starredItems,
     isLoading,
     handleFaved,

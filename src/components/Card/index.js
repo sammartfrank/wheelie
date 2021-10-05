@@ -1,33 +1,42 @@
 import './styles.css';
 
 const Card = ({ item }) => {
-  const isFaved = item.starred && '-show';
   switch (item.type) {
     case 'animal':
       return (
         <div className='card-wrapper'>
-          <div className={`star-item${isFaved}`} />
-          <h4 className='item-title'>{item.name || '--'}</h4>
-          <p>Scientific Name: {item.taxonomy.scientificName || '--'}</p>
+          {item.starred && <div className='star-item' />}
+          <h2 className='item-title'>{item.name || '--'}</h2>
+          <p>
+            <b>Scientific Name:</b> {item.taxonomy.scientificName || '--'}
+          </p>
           {item.image && <img src={item.image} alt={item.name} />}
         </div>
       );
     case 'product':
       return (
         <div className='card-wrapper'>
-         <div className={`star-item${item.starred && '-show'}`} />
-          <h4>{item.name || '--'}</h4>
-          <p>Category: {item.productCategory || '--'}</p>
-          <p>Description: {item.previewText || '--'}</p>
+          {item.starred && <div className='star-item' />}
+          <h2>{item.name || '--'}</h2>
+          <p>
+            <b>Category</b> {item.productCategory || '--'}
+          </p>
+          <p>
+            <b>Description:</b> {item.previewText || '--'}
+          </p>
         </div>
       );
     case 'company':
       return (
         <div className='card-wrapper'>
-         <div className={`star-item${item.starred && '-show'}`} />
-          <h4>{item.name || '--'}</h4>
-          <p>Description: {item.description || '--'}</p>
-          <p>Addres: {item.address1 || '--'}</p>
+          {item.starred && <div className='star-item' />}
+          <h2>{item.name || '--'}</h2>
+          <p>
+            <b>Description:</b> {item.description || '--'}
+          </p>
+          <p>
+            <b>Addres:</b> {item.address.address1 || '--'}
+          </p>
         </div>
       );
     default:

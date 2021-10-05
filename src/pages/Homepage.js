@@ -4,12 +4,12 @@ import './styles.css';
 
 const Homepage = () => {
   return (
-    <div>
+    <>
       <Search />
       <div className='content-wrapper'>
         <List />
       </div>
-    </div>
+    </>
   );
 };
 

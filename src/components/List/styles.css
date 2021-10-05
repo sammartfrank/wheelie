@@ -19,6 +19,9 @@
   flex-wrap: wrap;
   justify-content: space-evenly;
   gap: 10px;
+  overflow: scroll;
+  height: 100Vh;
+
 }
 
 .collapse {
