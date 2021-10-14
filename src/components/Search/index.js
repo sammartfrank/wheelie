@@ -2,18 +2,17 @@ import './styles.css';
 import { useState } from 'react';
 import OptionList from './components/OptionList';
 
-import { useSearch, useHomepage } from '../../hooks/index';
+import { useSearch } from '../../hooks/index';
 
 const Search = () => {
   const [show, setShow] = useState(false);
-  const { starredCount, starredItems, isLoading, data } = useHomepage();
   const {
     handleOnChange,
     handleKeyDown,
     handleSelectChange,
     filteredItems,
     showOptions,
-  } = useSearch(data);
+  } = useSearch([]);
 
   const handleAnchorClick = () => {
     setShow(!show);
@@ -26,7 +25,7 @@ const Search = () => {
           placeholder='Enter a query'
           onChange={handleOnChange}
           onKeyDown={handleKeyDown}
-          disabled={isLoading}
+          disabled={true}
         />
         <select onChange={handleSelectChange}>
           <option value='all'>All</option>
@@ -36,12 +35,12 @@ const Search = () => {
         </select>
       </div>
       <div>
-        {starredCount > 0 && (
+        {/* {starredCount > 0 && (
           <button className='fav-list-button' onClick={handleAnchorClick}>
             Favourite items: {starredCount ? starredCount : '--'}
           </button>
-        )}
-        <div className={`faved-list ${show ? 'show' : 'hidden'}`}>
+        )} */}
+        {/* <div className={`faved-list ${show ? 'show' : 'hidden'}`}>
           <ul className='faved-ul'>
             {starredItems.map((item) => (
               <li className='faved-item' key={item.id}>
@@ -49,7 +48,7 @@ const Search = () => {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
       </div>
       {filteredItems && showOptions && <OptionList options={filteredItems} />}
     </>

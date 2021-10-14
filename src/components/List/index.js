@@ -12,7 +12,7 @@ const List = () => {
     ));
   };
 
-  return Object.keys(data).map((list) => {
+  return Object.keys({}).map((list) => {
     const itemsLength = data[list].length;
     return (
       <div className='list-wrapper' key={list}>
