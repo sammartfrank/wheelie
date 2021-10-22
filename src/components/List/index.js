@@ -1,34 +1,44 @@
-import { useHomepage } from '../../hooks';
+import { useEffect } from 'react';
+import { useDataContext, getItems } from '../../context/dataContext';
+import { useUi } from '../../context/uiContext';
 import Card from '../Card';
 
 import './styles.css';
 
 const List = () => {
-  const { show, data, toggleShow } = useHomepage();
+  const { state, dispatch } = useDataContext();
+  const { uiState, interfaceDispatch } = useUi();
+
+  useEffect(() => {
+    getItems(dispatch);
+  }, [dispatch]);
 
   const renderCards = (list) => {
-    return data[list].map((item) => (
+    return state[list].map((item) => (
       <Card key={`${item.name}-${item.id}`} item={item} />
     ));
   };
 
-  return Object.keys({}).map((list) => {
-    const itemsLength = data[list].length;
+  return Object.keys(state).map((list) => {
+    if (list === 'isLoading') return [];
     return (
       <div className='list-wrapper' key={list}>
-        <h2 className='list-title' onClick={toggleShow(list)}>
-          {list} <em className='list-detail'>({itemsLength} items found)</em>
-          {show[list] ? '-' : '+'}
+        <h2
+          className='list-title'
+          onClick={() =>
+            interfaceDispatch({
+              type: `${uiState[list] ? 'collapse' : 'un-collapse'}`,
+              value: list,
+            })
+          }
+        >
+          {list} <em className='list-detail'>items found</em>
+          {uiState[list] ? '-' : '+'}
         </h2>
         <hr />
-
-        {!itemsLength ? (
-          <div>Items being rendered. It may take a few seconds.</div>
-        ) : (
-          <div className={`collapse ${show[list] && 'in'}`}>
-            <div className='item-list'>{renderCards(list)}</div>
-          </div>
-        )}
+        <div className={`collapse ${uiState[list] && 'in'}`}>
+          <div className='item-list'>{renderCards(list)}</div>
+        </div>
       </div>
     );
   });

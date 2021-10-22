@@ -1,29 +1,26 @@
 import { createContext, useContext, useReducer } from 'react';
 import { editData, getData } from '../utils/service';
+import { reduceData } from '../utils/index';
+
 const Context = createContext();
 
 async function getItems(dispatch) {
   dispatch({ type: 'start-fetch' });
   try {
-    const items = await getData(1, 25).then((val) =>
-      console.log('Response getData: ', val)
-    );
-    console.log('🚀 ---------------------------');
-    console.log('🚀 ~ items', items);
-    console.log('🚀 ---------------------------');
-    dispatch({ type: 'success-fetch', items });
+    const items = await getData(1, 25);
+    const newState = reduceData(items);
+    dispatch({ type: 'success-fetch', newState });
   } catch (error) {
     dispatch({ type: 'fail-fetch', error });
   }
 }
 
-async function updateItem(dispatch, item, updates) {
-  dispatch({ type: 'start-update', updates });
+async function updateItem(dispatch, item) {
+  dispatch({ type: 'start-update' });
   try {
-    const updatedItem = await editData(item.id, item).then((updatedItem) => {
-      console.log('the item updated: ', updatedItem);
-    });
+    const updatedItem = await editData(item.id, item);
     dispatch({ type: 'success-update', updatedItem });
+    getItems(dispatch)
   } catch (error) {
     dispatch({ type: 'fail-update', error });
   }
@@ -31,53 +28,44 @@ async function updateItem(dispatch, item, updates) {
 
 const contextReducer = (state, action) => {
   switch (action.type) {
-    case 'start-update': {
+    case 'start-fetch': {
       return {
         ...state,
-        isLoading: true
+        isLoading: true,
       };
     }
-    case 'success-update': {
-      let data;
-      action.items.forEach((item) => {
-        switch (item[0].type) {
-          case 'animal': {
-            data = {
-              ...data,
-              animals: [...data.animals, item],
-            };
-            break;
-          }
-          case 'product': {
-            data = {
-              ...data,
-              products: [...data.products, item],
-            };
-            break;
-          }
-          case 'company': {
-            data = {
-              ...data,
-              companies: [...data.companies, item],
-            };
-            break;
-          }
-          default: {
-            throw new Error('Unhandled type');
-          }
-        }
-      });
+    case 'success-fetch': {
       return {
-        ...data,
-        isLoading: false
-      }
+        ...state,
+        ...action.newState,
+        isLoading: false,
+      };
     }
-    case 'fail-update': {
+    case 'failed-fetch': {
       return {
         ...state,
         error: action.error,
-        isLoading: false
+        isLoading: false,
       };
+    }
+    case 'start-update': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'success-update': {
+      return {
+        ...state,
+        isLoading: false,
+      };
+    }
+    case 'failed-update': {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.error
+      }
     }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
@@ -96,12 +84,12 @@ const ContextProvider = ({ children }) => {
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
-const useStarContext = () => {
+const useDataContext = () => {
   const context = useContext(Context);
   if (context === undefined) {
-    throw new Error('useStar must be inside a Provider');
+    throw new Error('useDataContext must be inside a Provider');
   }
   return context;
 };
 
-export { ContextProvider, useStarContext, updateItem, getItems };
+export { ContextProvider, useDataContext, updateItem, getItems };

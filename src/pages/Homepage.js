@@ -10,9 +10,7 @@ const Homepage = () => {
     <ContextProvider>
       <Search />
       <UserInterfaceContextProvider>
-        <div className='content-wrapper'>
           <List />
-        </div>
       </UserInterfaceContextProvider>
     </ContextProvider>
   );

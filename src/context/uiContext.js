@@ -23,13 +23,12 @@ const uiContextReducer = (state, action) => {
 };
 
 const UserInterfaceContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(uiContextReducer, {
+  const [uiState, interfaceDispatch] = useReducer(uiContextReducer, {
     animals: true,
     companies: false,
     products: false,
   });
-
-  const value = { state, dispatch };
+  const value = { uiState, interfaceDispatch };
 
   return <UiContext.Provider value={value}>{children}</UiContext.Provider>;
 };

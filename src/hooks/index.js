@@ -1,10 +1,8 @@
 import { useState } from 'react';
+import { useDataContext } from '../context/dataContext';
 
-const useHomepage = () => {
-  return {};
-};
-
-const useSearch = (data) => {
+const useSearch = () => {
+  const { state } = useDataContext(); 
   const [selectedValue, setSelectedValue] = useState('all');
   const [showOptions, setShowOptions] = useState(false);
   const [filteredItems, setFilteredItems] = useState([]);
@@ -40,7 +38,7 @@ const useSearch = (data) => {
       return;
     }
     if (selectedValue === 'all') {
-      const allItems = Object.values(data).flat();
+      const allItems = Object.values(state).filter(item => Array.isArray(item)).flat();
       const filtered = allItems.filter((item) => {
         return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1;
       });
@@ -48,7 +46,7 @@ const useSearch = (data) => {
       setShowOptions(true);
       return;
     }
-    const filtered = data[selectedValue].filter((item) => {
+    const filtered = state[selectedValue].filter((item) => {
       return item.name.toLowerCase().indexOf(query.toLowerCase()) > -1;
     });
     setFilteredItems(filtered);
@@ -63,4 +61,4 @@ const useSearch = (data) => {
   };
 };
 
-export { useHomepage, useSearch };
+export { useSearch };

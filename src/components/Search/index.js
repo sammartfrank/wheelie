@@ -1,22 +1,17 @@
 import './styles.css';
-import { useState } from 'react';
 import OptionList from './components/OptionList';
 
 import { useSearch } from '../../hooks/index';
 
 const Search = () => {
-  const [show, setShow] = useState(false);
   const {
     handleOnChange,
     handleKeyDown,
     handleSelectChange,
     filteredItems,
     showOptions,
-  } = useSearch([]);
+  } = useSearch();
 
-  const handleAnchorClick = () => {
-    setShow(!show);
-  };
   return (
     <>
       <div className='search-box'>
@@ -25,7 +20,6 @@ const Search = () => {
           placeholder='Enter a query'
           onChange={handleOnChange}
           onKeyDown={handleKeyDown}
-          disabled={true}
         />
         <select onChange={handleSelectChange}>
           <option value='all'>All</option>

@@ -1,5 +1,5 @@
 export const reduceData = (data = []) => {
-  return data?.reduce(
+  return data?.flat().reduce(
     (prevValue, currValue) => {
       if (currValue.type === 'animal') {
         prevValue = {

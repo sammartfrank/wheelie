@@ -1,50 +1,19 @@
 import './styles.css';
 
+import AnimalCard from './AnimalCard';
+import ProductCard from './ProductCard';
+import CompanyCard from './CompanyCard';
+
 const Card = ({ item }) => {
   switch (item.type) {
     case 'animal':
-      return (
-        <div className='card-wrapper'>
-          {item.starred && <div className='star-item' />}
-          <h2 className='item-title'>{item.name || '--'}</h2>
-          <p>
-            <b>Scientific Name:</b> {item.taxonomy.scientificName || '--'}
-          </p>
-          {item.image && <img src={item.image} alt={item.name} />}
-        </div>
-      );
+      return <AnimalCard item={item} />;
     case 'product':
-      return (
-        <div className='card-wrapper'>
-          {item.starred && <div className='star-item' />}
-          <h2>{item.name || '--'}</h2>
-          <p>
-            <b>Category</b> {item.productCategory || '--'}
-          </p>
-          <p>
-            <b>Description:</b> {item.previewText || '--'}
-          </p>
-        </div>
-      );
+      return <ProductCard item={item} />;
     case 'company':
-      return (
-        <div className='card-wrapper'>
-          {item.starred && <div className='star-item' />}
-          <h2>{item.name || '--'}</h2>
-          <p>
-            <b>Description:</b> {item.description || '--'}
-          </p>
-          <p>
-            <b>Addres:</b> {item.address.address1 || '--'}
-          </p>
-        </div>
-      );
+      return <CompanyCard item={item} />;
     default:
-      return (
-        <div className='card-wrapper'>
-          <h4>{item.name || '--'}</h4>
-        </div>
-      );
+      throw new Error('Card Type not supported');
   }
 };
 

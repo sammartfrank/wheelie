@@ -1,21 +1,19 @@
-import { useHomepage } from '../../../hooks/index';
-
+import { updateItem, useDataContext } from '../../../context/dataContext';
 import './styles.css';
 
 const RenderOptions = (displayedOptions = []) => {
-  const { handleFaved } = useHomepage();
-
-  return displayedOptions.map(({ id, name, type, starred }) => {
+  const { dispatch } = useDataContext();
+  return displayedOptions.map((item) => {
     return (
       <li
         className='option-box'
-        key={id}
-        onClick={handleFaved(id, displayedOptions)}
+        key={item.id}
+        onClick={() => updateItem(dispatch, { ...item, starred: true })}
       >
         <div className='option-content'>
-          <p>{name}</p>
-          <em>{type}</em>
-          {starred && <div className='star' />}
+          <p>{item.name}</p>
+          <em>{item.type}</em>
+          {item.starred && <div className='star' />}
         </div>
       </li>
     );

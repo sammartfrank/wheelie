@@ -1,6 +1,6 @@
 export const getCompanies = async (page = 1, limit = 10) => {
   const response = await fetch(
-    `http://localhost:3001/search?type=company&_page=${page}&_limit=${limit}}`,
+    `http://localhost:3001/search?type=company&_page=${page}&_limit=${limit}`,
     {
       method: 'get',
     }
@@ -12,7 +12,7 @@ export const getCompanies = async (page = 1, limit = 10) => {
 
 export const getAnimals = async (page = 1, limit = 10) => {
   const response = await fetch(
-    `http://localhost:3001/search?type=animal&_page=${page}&_limit=${limit}}`,
+    `http://localhost:3001/search?type=animal&_page=${page}&_limit=${limit}`,
     {
       method: 'get',
     }
@@ -24,7 +24,7 @@ export const getAnimals = async (page = 1, limit = 10) => {
 
 export const getProducts = async (page = 1, limit = 10) => {
   const response = await fetch(
-    `http://localhost:3001/search?type=product&_page=${page}&_limit=${limit}}`,
+    `http://localhost:3001/search?type=product&_page=${page}&_limit=${limit}`,
     {
       method: 'get',
     }
